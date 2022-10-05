@@ -10,7 +10,7 @@
 
 
 ## Reinitialization process:
-  - Document the experiments and significant insights
+  - Document the old experiments and significant insights
   - Make inferencing time faster
   - Serve with tensorflow serving
   - Deploy the api with current best model
