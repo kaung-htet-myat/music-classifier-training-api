@@ -14,7 +14,7 @@
   - Make inferencing time faster
   - Serve with tensorflow serving
   - Deploy the api with current best model
-  - Explore experiments and try out more experiments (make document)
+  - Explore experiments and make thorough experiment documentation
   - Realtime inferencing with django channel
   - Data augmentation to simulate realtime audio
   - Tryout transformer models
