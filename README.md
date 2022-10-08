@@ -1,7 +1,8 @@
 # Music Genre Classification
 
-## Re-onboarding process:
-  - Read audio data preprocessing process (write a blog)
+
+## Project process:
+  - Read audio data preprocessing process (pair with a blog)
   - Re-implement in Pytorch
       - data pipeline
       - model building
@@ -9,16 +10,11 @@
       - model checkpointing
       - model saving
       - model deployment
-
-
-## Reinitialization process:
-  - Document the old experiments and significant insights
-  - Make inferencing time faster
-  - Deploy the api with current best model
-  - Explore experiments and make thorough experiment documentation
+  - Experiments design (define which architectures to train)
+  - Do experiments and make report
+  - Deploy the best model to api
   - Realtime inferencing with django channel
   - Data augmentation to simulate realtime audio
-  - Tryout transformer models
   - Build custom dataset
   - Implement model training library
   - Make api endpoints better, more secure and add more features
