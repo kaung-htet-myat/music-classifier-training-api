@@ -3,6 +3,12 @@
 ## Re-onboarding process:
   - Read audio data preprocessing process (write a blog)
   - Re-implement in Pytorch
+      - data pipeline
+      - model building
+      - finetuning pretrained models
+      - model checkpointing
+      - model saving
+      - model deployment
 
 
 ## Reinitialization process:
