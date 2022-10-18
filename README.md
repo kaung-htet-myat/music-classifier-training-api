@@ -11,10 +11,20 @@
       - model saving
       - model deployment
   - Experiments design (define which architectures to train)
+      - architecture exps
+        - backbone + linear
+        - backbone + prcnn
+        - backbone + transformer
+      - preprocessing exps
+        - raw signal
+        - spectrogram
+        - melspectrogram
+        - mfcc
+      - data augmentation exps
+  - Implement model training library
   - Do experiments and make report
   - Deploy the best model to api
   - Realtime inferencing with django channel
   - Data augmentation to simulate realtime audio
   - Build custom dataset
-  - Implement model training library
   - Make api endpoints better, more secure and add more features
