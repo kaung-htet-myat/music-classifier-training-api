@@ -12,7 +12,7 @@
       - model deployment
   - Experiments design (define which architectures to train)
       - architecture exps
-        - backbone + linear
+        - backbone + linear (resnet, inception, efficientnet)
         - backbone + prcnn
         - backbone + transformer
       - preprocessing exps
@@ -21,7 +21,23 @@
         - melspectrogram
         - mfcc
       - data augmentation exps
-  - Implement model training library
+  - Implement model training library (config structure)
+      - data
+        - data path
+        - preprocessing type
+        - preprocessing parameters
+        - augment or not
+      - model
+        - backbone
+        - head
+      - training
+        - batch size
+        - shuffle buffer size
+        - epochs
+        - checkpoint path
+        - initial epoch
+        - optimizer
+        - lr
   - Do experiments and make report
   - Deploy the best model to api
   - Realtime inferencing with django channel
