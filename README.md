@@ -39,8 +39,11 @@
         - optimizer
         - lr
   - Do experiments and make report
+ [Nov]
   - Deploy the best model to api
   - Realtime inferencing with django channel
   - Data augmentation to simulate realtime audio
+ [Dec]
   - Build custom dataset
   - Make api endpoints better, more secure and add more features
+  - Make training api better
