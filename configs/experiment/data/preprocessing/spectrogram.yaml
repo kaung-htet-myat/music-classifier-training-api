@@ -1,0 +1,5 @@
+name: spectrogram
+sample_rate: 22050
+sample_length: 5
+fft_size: 1024
+hop_length: 192

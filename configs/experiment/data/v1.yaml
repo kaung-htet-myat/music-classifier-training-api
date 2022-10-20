@@ -1,0 +1,10 @@
+version: 1
+train_records: [
+  "genres_dataset_0-of-8"
+]
+dev_records: [
+  "genres_dataset_1-of-8"
+]
+test_records: [
+  "genres_dataset_5-of-8"
+]
