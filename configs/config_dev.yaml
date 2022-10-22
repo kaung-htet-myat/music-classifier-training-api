@@ -1,5 +1,5 @@
 defaults:
-  - experiment: resnet_linear_melspectrogram
+  - experiment: inceptionv3_prcnn_melspectrogram
 
 hydra:
   output_subdir: null
@@ -12,3 +12,5 @@ experiment:
     label_path: ./data/genre_labels.json
   training:
     checkpoint_path: ./checkpoint
+    load: False
+    initial_epoch: 0

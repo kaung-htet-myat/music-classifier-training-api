@@ -1,7 +1,7 @@
 defaults:
   - data: v1
-  - data/preprocessing: raw
-  - model: linear
+  - data/preprocessing: melspectrogram
+  - model: prcnn
 
 data:
   preprocessing:

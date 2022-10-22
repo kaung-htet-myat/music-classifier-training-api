@@ -2,5 +2,6 @@ hydra-core==1.2.0
 tfrecord==1.14.1
 torch==1.12.1
 torchaudio==0.12.1
+torchvision==0.13.1
 protobuf==3.20.*
 matplotlib

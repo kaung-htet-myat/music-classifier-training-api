@@ -6,3 +6,5 @@ experiment:
     dataset_path: ./data
   training:
     checkpoint_path: ./checkpoint
+    load: False
+    initial_epoch: 0
