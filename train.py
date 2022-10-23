@@ -19,7 +19,8 @@ from utils.training import (
 )
 from utils.wandb import wandb_init
 from utils.exceptions import (
-    ParameterNotProvidedError
+    ParameterNotProvidedError,
+    UnsupportedParameterError
 )
 from settings.log_settings import LOGGING_CONFIG
 
@@ -87,7 +88,7 @@ def main(cfg: DictConfig):
         load_path = os.path.join(training_cfg.checkpoint_path, f'{exp_name}_epoch_{training_cfg.initial_epoch-1}.pth')
 
         if not os.path.exists(load_path):
-            info_logger.info("model checkpoint path to load is not a directory")
+            raise UnsupportedParameterError("model checkpoint path to load is not a directory")
 
         map_location = device
         if device == 'cuda':
