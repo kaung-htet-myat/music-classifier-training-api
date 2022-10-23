@@ -54,7 +54,7 @@ def main(cfg: DictConfig):
     if not data_cfg.label_path:
         raise ParameterNotProvidedError("label file not provided")
 
-    if not data_cfg.checkpoint_path:
+    if not training_cfg.checkpoint_path:
         data_cfg.checkpoint_path = './checkpoints'
 
     tfrec_pattern = f"{data_cfg.dataset_path}/genre/" + "{}.tfrecords"

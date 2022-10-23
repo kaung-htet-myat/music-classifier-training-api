@@ -18,7 +18,7 @@ def plot_spectrogram(spec, title=None, ylabel='freq_bin', aspect='auto', xmax=No
     if xmax:
         axs.set_xlim((0, xmax))
     fig.colorbar(im, ax=axs)
-    plt.show(block=False)
+    plt.show()
 
 
 @hydra.main(version_base=None, config_path="./configs", config_name="config_dev")
