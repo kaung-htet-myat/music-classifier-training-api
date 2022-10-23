@@ -10,6 +10,10 @@ LOGGING_CONFIG = {
             "()": Formatter,
             "format": "%(asctime)s [%(levelname)s] %(name)s::%(module)s|%(lineno)s: %(message)s",
         },
+        "train_log": {
+            "()": Formatter,
+            "format": "%(message)s",
+        },
     },
     "handlers": {
         "default": {
@@ -18,11 +22,24 @@ LOGGING_CONFIG = {
             "class": "logging.StreamHandler",
             "stream": "ext://sys.stdout",
         },
+        "train_log": {
+            "level": "DEBUG",
+            "formatter": "train_log",
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout",
+        },
     },
     "loggers": {
-        "trainer": {
+        "info_logger": {
             "handlers": [
                 "default",
+            ],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "train_logger": {
+            "handlers": [
+                "train_log",
             ],
             "level": "INFO",
             "propagate": False,

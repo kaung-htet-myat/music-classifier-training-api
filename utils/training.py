@@ -27,7 +27,7 @@ def get_scheduler(optimizer, scheduler_cfg):
     return lr_scheduler
 
 
-def train_epoch(device, epoch, model, dataloader, loss_func, optimizer, checkpoint_path, exp_name, wandb, logger):
+def train_epoch(device, epoch, model, dataloader, loss_func, optimizer, scheduler, checkpoint_path, exp_name, wandb, logger):
     logger.info(f"epoch {epoch}")
     batches = 0
     model.train().to(device)
@@ -61,16 +61,19 @@ def train_epoch(device, epoch, model, dataloader, loss_func, optimizer, checkpoi
         "lr": lr,
     })
 
+    scheduler.step()
+
     torch.save(
         {
             'epoch': epoch,
             'model_state_dict': model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
+            'scheduler_state_dict': scheduler.state_dict(),
             'loss': train_loss,
         }, os.path.join(checkpoint_path, f'{exp_name}_epoch_{epoch}.pth'))
 
 
-def test_epoch(device, model, dataloader, loss_func, wandb, logger):
+def test_epoch(device, epoch, model, dataloader, loss_func, wandb, logger):
     size = 0
     batches = 0
     model.eval().to(device)
@@ -94,6 +97,7 @@ def test_epoch(device, model, dataloader, loss_func, wandb, logger):
     logger.info("="*20)
 
     wandb.log({
+        "epoch": epoch,
         "val_loss": loss,
         "val_acc": acc,
     })

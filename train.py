@@ -24,16 +24,16 @@ from utils.exceptions import (
 from settings.log_settings import LOGGING_CONFIG
 
 
-def _get_logger() -> logging.Logger:
+def _get_loggers() -> logging.Logger:
     """Initialize the logger"""
     logging.config.dictConfig(LOGGING_CONFIG)
-    return logging.getLogger("trainer")
+    return logging.getLogger("info_logger"), logging.getLogger("train_logger")
 
 
 @hydra.main(version_base=None, config_path="./configs", config_name="config_dev")
 def main(cfg: DictConfig):
 
-    logger = _get_logger()
+    info_logger, train_logger = _get_loggers()
 
     exp_name = cfg.experiment.name
     data_cfg = cfg.experiment.data
@@ -55,7 +55,10 @@ def main(cfg: DictConfig):
         raise ParameterNotProvidedError("label file not provided")
 
     if not training_cfg.checkpoint_path:
-        data_cfg.checkpoint_path = './checkpoints'
+        training_cfg.checkpoint_path = './checkpoints'
+
+    if not os.path.exists(training_cfg.checkpoint_path):
+      os.makedirs(training_cfg.checkpoint_path)
 
     tfrec_pattern = f"{data_cfg.dataset_path}/genre/" + "{}.tfrecords"
     index_pattern = f"{data_cfg.dataset_path}/index/" + "{}.index"
@@ -70,9 +73,10 @@ def main(cfg: DictConfig):
 
     # model creation
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    logger.info(f"running on {device}")
+    info_logger.info(f"running on {device}")
 
     model = build_model(model_cfg)
+    model.to(device)
 
     loss_func = torch.nn.CrossEntropyLoss()
 
@@ -83,23 +87,27 @@ def main(cfg: DictConfig):
         load_path = os.path.join(training_cfg.checkpoint_path, f'{exp_name}_epoch_{training_cfg.initial_epoch-1}.pth')
 
         if not os.path.exists(load_path):
-            logger.info("model checkpoint path to load is not a directory")
+            info_logger.info("model checkpoint path to load is not a directory")
 
-        checkpoint = torch.load(load_path)
+        map_location = device
+        if device == 'cuda':
+          map_location = "cuda:0"
+
+        checkpoint = torch.load(load_path, map_location=map_location)
+
         model.load_state_dict(checkpoint['model_state_dict'])
+        model.to(device)
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-
-    model.to(device)
+        scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
 
     if wandb_cfg.log:
         wandb.watch(model, log_freq=10)
 
     for epoch in range(initial_epoch, training_cfg.epochs):
         start_time = time.time()
-        train_epoch(device, epoch, model, train_loader, loss_func, optimizer, training_cfg.checkpoint_path, exp_name, wandb, logger)
-        logger.info(f"time taken(training): {int(time.time() - start_time)}s")
-        scheduler.step()
-        test_epoch(device, model, dev_loader, loss_func, wandb, logger)
+        train_epoch(device, epoch, model, train_loader, loss_func, optimizer, scheduler, training_cfg.checkpoint_path, exp_name, wandb, train_logger)
+        train_logger.info(f"time taken(training): {int(time.time() - start_time)}s")
+        test_epoch(device, epoch, model, dev_loader, loss_func, wandb, train_logger)
 
 
 if __name__ == '__main__':
