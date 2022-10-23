@@ -14,3 +14,11 @@ experiment:
     checkpoint_path: ./checkpoint
     load: False
     initial_epoch: 0
+  wandb:
+    log: True
+    project_name: music-genre-classification
+    entity: kaung-htet
+    group: null
+    resume: allow
+    name: null
+    id: null

@@ -1,3 +1,4 @@
+name: resnet_linear_raw
 defaults:
   - data: v1
   - data/preprocessing: raw

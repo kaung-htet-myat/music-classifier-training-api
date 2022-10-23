@@ -8,6 +8,8 @@ import torchaudio
 import torchaudio.functional as F
 import torchaudio.transforms as T
 
+from utils.exceptions import ParameterNotProvidedError
+
 
 def get_transforms(data_cfg: DictConfig):
 
@@ -71,7 +73,7 @@ def get_dataset(tfrec_pattern, index_pattern, records, transform, buffer_size):
     }
 
     if len(records) == 0:
-        print("train, dev or test record list cannot be empty")
+        raise ParameterNotProvidedError("train, dev or test record list cannot be empty")
 
     splits = {k:1.0 for k in records}
 

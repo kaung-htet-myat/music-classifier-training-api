@@ -1,3 +1,4 @@
+import os
 from omegaconf import DictConfig
 
 import torch
@@ -6,6 +7,8 @@ import torchvision
 from torchvision.models import inception_v3
 
 from models.prcnn import PRCNN
+
+from utils.exceptions import UnsupportedParameterError
 
 
 def get_inceptionv3_backbone():
@@ -20,10 +23,10 @@ def get_inceptionv3_backbone():
 def build_model(model_cfg: DictConfig):
 
     if model_cfg.backbone not in ["resnet", "inceptionv3", "efficientnet"]:
-        print("Model backbone should be one of \"resnet\", \"inceptionv3\" or \"efficientnet\"")
+        raise UnsupportedParameterError("Model backbone should be one of \"resnet\", \"inceptionv3\" or \"efficientnet\"")
 
     if model_cfg.name not in ["linear", "prcnn", "transformer"]:
-        print("Model architecture should be one of \"linear\", \"prcnn\" or \"transformer\"")
+        raise UnsupportedParameterError("Model architecture should be one of \"linear\", \"prcnn\" or \"transformer\"")
 
     if model_cfg.backbone == "inceptionv3":
         backbone, return_nodes = get_inceptionv3_backbone()

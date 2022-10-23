@@ -1,3 +1,4 @@
+name: resnet_linear_melspectrogram
 defaults:
   - data: v1
   - data/preprocessing: melspectrogram

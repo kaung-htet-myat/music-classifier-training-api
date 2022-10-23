@@ -1,3 +1,4 @@
+import os
 import torch
 
 
@@ -7,23 +8,27 @@ def get_lr(optimizer):
 
 
 def get_optimizer(model, optimizer_cfg):
-    optimizer = None
 
     if optimizer_cfg.method == "adam":
         optimizer = torch.optim.Adam(model.parameters(), lr=optimizer_cfg.lr)
+    else:
+        optimizer = torch.optim.Adam(model.parameters(), lr=optimizer_cfg.lr)
+
     return optimizer
 
 
 def get_scheduler(optimizer, scheduler_cfg):
-    lr_scheduler = None
 
     if scheduler_cfg.method == "step":
         lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=scheduler_cfg.step_size, gamma=scheduler_cfg.gamma)
+    else:
+        lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=scheduler_cfg.step_size, gamma=scheduler_cfg.gamma)
+
     return lr_scheduler
 
 
-def train_epoch(device, epoch, model, dataloader, loss_func, optimizer):
-    print(f"epoch {epoch}")
+def train_epoch(device, epoch, model, dataloader, loss_func, optimizer, checkpoint_path, exp_name, wandb, logger):
+    logger.info(f"epoch {epoch}")
     batches = 0
     model.train().to(device)
 
@@ -39,7 +44,6 @@ def train_epoch(device, epoch, model, dataloader, loss_func, optimizer):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        # xm.mark_step()
 
         running_loss = loss.item()
         train_loss += running_loss
@@ -49,13 +53,24 @@ def train_epoch(device, epoch, model, dataloader, loss_func, optimizer):
             print(f"loss: {running_loss} [{current:>5d}]")
 
     train_loss = train_loss / batches
-    print(f"train loss: {train_loss}\tlr: {get_lr(optimizer)}")
+    lr = get_lr(optimizer)
+    logger.info(f"train loss: {train_loss}\tlr: {lr}")
+    wandb.log({
+        "epoch": epoch,
+        "loss": train_loss,
+        "lr": lr,
+    })
 
-    # torch.save(model.state_dict(), CHECKPOINT_PATH+f'epoch_{epoch}_weights.pth')
-    # xm.save(model.state_dict(), CHECKPOINT_PATH+f'epoch_{epoch}_weights.pth') # for xla
+    torch.save(
+        {
+            'epoch': epoch,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'loss': train_loss,
+        }, os.path.join(checkpoint_path, f'{exp_name}_epoch_{epoch}.pth'))
 
 
-def test_epoch(device, model, dataloader, loss_func):
+def test_epoch(device, model, dataloader, loss_func, wandb, logger):
     size = 0
     batches = 0
     model.eval().to(device)
@@ -75,5 +90,10 @@ def test_epoch(device, model, dataloader, loss_func):
     loss = loss / batches
     acc = acc / size
 
-    print(f"Test Error: \n Accuracy: {(100*acc):>0.1f}%, Avg loss: {loss:>8f}")
-    print("="*20)
+    logger.info(f"Test Error: \n Accuracy: {(100*acc):>0.1f}%, Avg loss: {loss:>8f}")
+    logger.info("="*20)
+
+    wandb.log({
+        "val_loss": loss,
+        "val_acc": acc,
+    })

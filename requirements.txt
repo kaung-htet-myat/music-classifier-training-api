@@ -5,3 +5,4 @@ torchaudio==0.12.1
 torchvision==0.13.1
 protobuf==3.20.*
 matplotlib
+wandb==0.13.4

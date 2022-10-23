@@ -1,3 +1,4 @@
+name: inceptionv3_linear_raw
 defaults:
   - data: v1
   - data/preprocessing: raw
