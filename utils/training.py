@@ -28,7 +28,7 @@ def get_scheduler(optimizer, scheduler_cfg):
 
 
 def train_epoch(device, epoch, model, dataloader, loss_func, optimizer, scheduler, checkpoint_path, exp_name, wandb, logger):
-    logger.info(f"epoch {epoch}")
+    logger.info(f"epoch {epoch}:")
     batches = 0
     model.train().to(device)
 
@@ -48,13 +48,13 @@ def train_epoch(device, epoch, model, dataloader, loss_func, optimizer, schedule
         running_loss = loss.item()
         train_loss += running_loss
 
-        if batch % 100 == 0:
-            current = batch * len(X)
-            print(f"loss: {running_loss} [{current:>5d}]")
+        # if batch % 100 == 0:
+        #     current = batch * len(X)
+        #     print(f"loss: {running_loss} [{current:>5d}]")
 
     train_loss = train_loss / batches
     lr = get_lr(optimizer)
-    logger.info(f"train loss: {train_loss}\tlr: {lr}")
+    logger.info(f"\ttrain loss: {train_loss}\tlr: {lr}")
     wandb.log({
         "epoch": epoch,
         "loss": train_loss,
@@ -93,7 +93,7 @@ def test_epoch(device, epoch, model, dataloader, loss_func, wandb, logger):
     loss = loss / batches
     acc = acc / size
 
-    logger.info(f"Test Error: \n Accuracy: {(100*acc):>0.1f}%, Avg loss: {loss:>8f}")
+    logger.info(f"\tval loss: {loss:>8f}\tval acc: {(100*acc):>0.1f}%")
     logger.info("="*20)
 
     wandb.log({
