@@ -76,7 +76,7 @@ def main(cfg: DictConfig):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     info_logger.info(f"running on {device}")
 
-    model = build_model(model_cfg)
+    model = build_model(data_cfg, model_cfg)
     model.to(device)
 
     loss_func = torch.nn.CrossEntropyLoss()

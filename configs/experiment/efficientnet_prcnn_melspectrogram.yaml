@@ -1,8 +1,8 @@
-name: inceptionv3_linear_raw
+name: efficientnet_prcnn_melspectrogram
 defaults:
   - data: v1
-  - data/preprocessing: raw
-  - model: linear
+  - data/preprocessing: melspectrogram
+  - model: prcnn
 
 data:
   preprocessing:
@@ -10,8 +10,12 @@ data:
     augment: False
 
 model:
-  backbone: inceptionv3
-  hidden_units: 128
+  backbone: efficientnet
+  backbone_out_channel: 160
+  backbone_out_height: 8
+  backbone_out_width: 14
+  hidden_dims_1: 128
+  hidden_dims_2: 128
 
 training:
   buffer_size: 512

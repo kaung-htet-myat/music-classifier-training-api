@@ -1,5 +1,5 @@
 defaults:
-  - experiment: inceptionv3_prcnn_melspectrogram
+  - experiment: efficientnet_prcnn_mfcc
 
 hydra:
   output_subdir: null
@@ -8,8 +8,10 @@ hydra:
 
 experiment:
   data:
-    dataset_path: /content/drive/MyDrive/music_genre_classification/data
-    label_path: /content/drive/MyDrive/music_genre_classification/genre_labels.json
+    # dataset_path: /content/drive/MyDrive/music_genre_classification/data
+    # label_path: /content/drive/MyDrive/music_genre_classification/genre_labels.json
+    dataset_path: ./data
+    label_path: ./data/genre_labels.json
   training:
     checkpoint_path: ./checkpoint
     load: True

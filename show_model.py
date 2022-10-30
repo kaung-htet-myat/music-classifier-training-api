@@ -11,8 +11,9 @@ def get_model_param_count(model):
 @hydra.main(version_base=None, config_path="./configs", config_name="config_dev")
 def main(cfg: DictConfig):
     
+    data_cfg = cfg.experiment.data
     model_cfg = cfg.experiment.model
-    model = build_model(model_cfg)
+    model = build_model(data_cfg, model_cfg)
 
     print(model)
     del model

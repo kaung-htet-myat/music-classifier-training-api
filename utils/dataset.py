@@ -32,8 +32,32 @@ def get_transforms(data_cfg: DictConfig):
             amp_to_db = T.AmplitudeToDB()
             resampled = mel_spectrogram(resampled)
             resampled = amp_to_db(resampled)
-            resampled = resampled.unsqueeze(axis=0)
+        elif data_cfg.preprocessing.name == "spectrogram":
+            spectrogram = T.Spectrogram(
+                                n_fft=data_cfg.preprocessing.fft_size,
+                                win_length=None,
+                                hop_length=data_cfg.preprocessing.hop_length,
+                                center=False,
+                                power=2.0,
+                            )
+            amp_to_db = T.AmplitudeToDB()
+            resampled = spectrogram(resampled)
+            resampled = amp_to_db(resampled)
+        elif data_cfg.preprocessing.name == "mfcc":
+            mfcc = T.MFCC(
+                        sample_rate=data_cfg.preprocessing.sample_rate,
+                        n_mfcc=data_cfg.preprocessing.n_mfcc,
+                        melkwargs={
+                            "n_fft": data_cfg.preprocessing.fft_size,
+                            "n_mels": data_cfg.preprocessing.n_mels,
+                            "hop_length": data_cfg.preprocessing.hop_length,
+                        },
+                    )
+            amp_to_db = T.AmplitudeToDB()
+            resampled = mfcc(resampled)
+            resampled = amp_to_db(resampled)
 
+        resampled = resampled.unsqueeze(axis=0)
         label = torch.from_numpy(label)[0]
         return resampled, label
 
@@ -57,8 +81,32 @@ def get_transforms(data_cfg: DictConfig):
             amp_to_db = T.AmplitudeToDB()
             resampled = mel_spectrogram(resampled)
             resampled = amp_to_db(resampled)
-            resampled = resampled.unsqueeze(axis=0)
+        elif data_cfg.preprocessing.name == "spectrogram":
+            spectrogram = T.Spectrogram(
+                                n_fft=data_cfg.preprocessing.fft_size,
+                                win_length=None,
+                                hop_length=data_cfg.preprocessing.hop_length,
+                                center=False,
+                                power=2.0,
+                            )
+            amp_to_db = T.AmplitudeToDB()
+            resampled = spectrogram(resampled)
+            resampled = amp_to_db(resampled)
+        elif data_cfg.preprocessing.name == "mfcc":
+            mfcc = T.MFCC(
+                        sample_rate=data_cfg.preprocessing.sample_rate,
+                        n_mfcc=data_cfg.preprocessing.n_mfcc,
+                        melkwargs={
+                            "n_fft": data_cfg.preprocessing.fft_size,
+                            "n_mels": data_cfg.preprocessing.n_mels,
+                            "hop_length": data_cfg.preprocessing.hop_length,
+                        },
+                    )
+            amp_to_db = T.AmplitudeToDB()
+            resampled = mfcc(resampled)
+            resampled = amp_to_db(resampled)
 
+        resampled = resampled.unsqueeze(axis=0)
         label = torch.from_numpy(label)[0]
         return resampled, label
 

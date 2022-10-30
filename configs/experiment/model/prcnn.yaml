@@ -1,3 +1,7 @@
 name: prcnn
 backbone: null
-hidden_units: null
+backbone_out_channel: null
+backbone_out_height: null
+backbone_out_width: null
+hidden_dims_1: null
+hidden_dims_2: null

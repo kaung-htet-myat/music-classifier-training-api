@@ -1,8 +1,8 @@
-name: resnet_linear_melspectrogram
+name: efficientnet_prcnn_spectrogram
 defaults:
   - data: v1
-  - data/preprocessing: melspectrogram
-  - model: linear
+  - data/preprocessing: spectrogram
+  - model: prcnn
 
 data:
   preprocessing:
@@ -10,8 +10,12 @@ data:
     augment: False
 
 model:
-  backbone: resnet
-  hidden_units: 128
+  backbone: efficientnet
+  backbone_out_channel: 160
+  backbone_out_height: 33
+  backbone_out_width: 14
+  hidden_dims_1: 128
+  hidden_dims_2: 128
 
 training:
   buffer_size: 512
