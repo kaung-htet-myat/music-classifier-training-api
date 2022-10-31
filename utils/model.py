@@ -40,7 +40,7 @@ def build_model(data_cfg: DictConfig, model_cfg: DictConfig):
         input_height = data_cfg.preprocessing.n_mels
     elif data_cfg.preprocessing.name == "spectrogram":
         input_width = int(((data_cfg.preprocessing.sample_length * data_cfg.preprocessing.sample_rate) - data_cfg.preprocessing.fft_size) // data_cfg.preprocessing.hop_length + 1)
-        input_height = int(data_cfg.preprocessing.ftt_size // 2 + 1)
+        input_height = int(data_cfg.preprocessing.fft_size // 2 + 1)
     elif data_cfg.preprocessing.name == "mfcc":
         input_width = int(((data_cfg.preprocessing.sample_length * data_cfg.preprocessing.sample_rate) - data_cfg.preprocessing.fft_size) // data_cfg.preprocessing.hop_length + 1)
         input_height = data_cfg.preprocessing.n_mfcc
