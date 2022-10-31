@@ -1,7 +1,7 @@
-name: efficientnet_linear_melspectrogram
+name: efficientnet_linear_mfcc
 defaults:
   - data: v1
-  - data/preprocessing: melspectrogram
+  - data/preprocessing: mfcc
   - model: linear
 
 data:
