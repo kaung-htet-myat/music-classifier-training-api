@@ -30,8 +30,8 @@ def build_model(data_cfg: DictConfig, model_cfg: DictConfig, device):
     if not model_cfg.backbone == "efficientnet" :
         raise UnsupportedParameterError("Only \"efficientnet\" is provided as backbone for now")
 
-    if model_cfg.name not in ["linear", "prcnn", "transformer"]:
-        raise UnsupportedParameterError("Model architecture should be one of \"linear\", \"prcnn\" or \"transformer\"")
+    if model_cfg.name not in ["linear", "prcnn", "vit"]:
+        raise UnsupportedParameterError("Model architecture should be one of \"linear\", \"prcnn\" or \"vit\"")
 
     if model_cfg.backbone == "efficientnet":
         backbone, return_nodes = get_efficientnet_backbone()
