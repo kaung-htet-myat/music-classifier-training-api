@@ -1,0 +1,34 @@
+name: efficientnet_vit_mfcc
+defaults:
+  - data: v1
+  - data/preprocessing: mfcc
+  - model: vit
+
+data:
+  preprocessing:
+    noise: False
+    augment: False
+
+model:
+  backbone: efficientnet
+  backbone_out_channel: 160
+  backbone_out_height: 8
+  backbone_out_width: 14
+  num_layers: 3
+  proj_dim: 128
+  hidden_dim: 128
+  num_heads: 4
+
+training:
+  buffer_size: 512
+  seed: 1234
+  batch_size: 64
+  epochs: 140
+  optimizer: 
+    method: adam
+    lr: 0.001
+  scheduler:
+    method: step
+    step_size: 15
+    gamma: 0.1
+

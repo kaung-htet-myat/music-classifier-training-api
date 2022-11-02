@@ -8,6 +8,7 @@ from torchvision.models import efficientnet_v2_m
 
 from models.prcnn import PRCNN
 from models.linear import Linear
+from models.vit import Vit
 
 from utils.exceptions import UnsupportedParameterError
 
@@ -21,7 +22,7 @@ def get_efficientnet_backbone():
     return backbone_model, return_nodes
 
 
-def build_model(data_cfg: DictConfig, model_cfg: DictConfig):
+def build_model(data_cfg: DictConfig, model_cfg: DictConfig, device):
 
     if data_cfg.preprocessing.name not in ["spectrogram", "melspectrogram", "mfcc"]:
         raise UnsupportedParameterError("Data preprocessing should be one of \"spectrogram\", \"melspectrogram\" or \"mfcc\"")
@@ -60,6 +61,17 @@ def build_model(data_cfg: DictConfig, model_cfg: DictConfig):
             backbone,
             (model_cfg.backbone_out_channel, model_cfg.backbone_out_height, model_cfg.backbone_out_width),
             model_cfg.hidden_dims,
+            return_nodes
+        )
+    elif model_cfg.name == "vit":
+        model = Vit(
+            backbone,
+            (model_cfg.backbone_out_channel, model_cfg.backbone_out_height, model_cfg.backbone_out_width),
+            model_cfg.num_layers,
+            model_cfg.proj_dim,
+            model_cfg.hidden_dim,
+            model_cfg.num_heads,
+            device,
             return_nodes
         )
 
