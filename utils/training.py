@@ -20,9 +20,22 @@ def get_optimizer(model, optimizer_cfg):
 def get_scheduler(optimizer, scheduler_cfg):
 
     if scheduler_cfg.method == "step":
-        lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=scheduler_cfg.step_size, gamma=scheduler_cfg.gamma)
+        lr_scheduler = torch.optim.lr_scheduler.StepLR(
+                            optimizer,
+                            step_size=scheduler_cfg.step_size,
+                            gamma=scheduler_cfg.gamma)
+    elif scheduler_cfg.method == "cosine":
+        lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+                            optimizer,
+                            T_0=scheduler_cfg.t_0,
+                            T_mult=scheduler_cfg.t_mult,
+                            eta_min=scheduler_cfg.eta_min,
+                            last_epoch=scheduler_cfg.last_epoch)
     else:
-        lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=scheduler_cfg.step_size, gamma=scheduler_cfg.gamma)
+        lr_scheduler = torch.optim.lr_scheduler.StepLR(
+                            optimizer,
+                            step_size=scheduler_cfg.step_size,
+                            gamma=scheduler_cfg.gamma)
 
     return lr_scheduler
 

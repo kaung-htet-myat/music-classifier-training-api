@@ -26,7 +26,12 @@ training:
     method: adam
     lr: 0.001
   scheduler:
-    method: step
-    step_size: 15
-    gamma: 0.1
+    # method: step
+    # step_size: 15
+    # gamma: 0.1
+    method: cosine
+    t_0: 10
+    t_mult: 1
+    eta_min: 0
+    last_epoch: -1
 
