@@ -29,9 +29,8 @@ def get_transforms(data_cfg: DictConfig):
                                         hop_length=data_cfg.preprocessing.hop_length,
                                         n_mels=data_cfg.preprocessing.n_mels
                                     )
-            amp_to_db = T.AmplitudeToDB()
             resampled = mel_spectrogram(resampled)
-            resampled = amp_to_db(resampled)
+            resampled = resampled.unsqueeze(axis=0)
         elif data_cfg.preprocessing.name == "spectrogram":
             spectrogram = T.Spectrogram(
                                 n_fft=data_cfg.preprocessing.fft_size,
@@ -40,9 +39,8 @@ def get_transforms(data_cfg: DictConfig):
                                 center=False,
                                 power=2.0,
                             )
-            amp_to_db = T.AmplitudeToDB()
             resampled = spectrogram(resampled)
-            resampled = amp_to_db(resampled)
+            resampled = resampled.unsqueeze(axis=0)
         elif data_cfg.preprocessing.name == "mfcc":
             mfcc = T.MFCC(
                         sample_rate=data_cfg.preprocessing.sample_rate,
@@ -53,11 +51,20 @@ def get_transforms(data_cfg: DictConfig):
                             "hop_length": data_cfg.preprocessing.hop_length,
                         },
                     )
-            amp_to_db = T.AmplitudeToDB()
             resampled = mfcc(resampled)
-            resampled = amp_to_db(resampled)
+            resampled = resampled.unsqueeze(axis=0)
 
-        resampled = resampled.unsqueeze(axis=0)
+        aug_rand = torch.rand([1])
+
+        if data_cfg.augmentation.time_masking and aug_rand < 0.25:
+            time_mask = T.TimeMasking(time_mask_param=data_cfg.augmentation.time_mask_param)
+            resampled = time_mask(resampled)
+        if data_cfg.augmentation.freq_masking and 0.25 < aug_rand < 0.5:
+            freq_mask = T.FrequencyMasking(freq_mask_param=data_cfg.augmentation.freq_mask_param)
+            resampled = freq_mask(resampled)
+            
+        amp_to_db = T.AmplitudeToDB()
+        resampled = amp_to_db(resampled)
         label = torch.from_numpy(label)[0]
         return resampled, label
 

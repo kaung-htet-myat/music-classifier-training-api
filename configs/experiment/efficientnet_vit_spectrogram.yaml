@@ -5,9 +5,11 @@ defaults:
   - model: vit
 
 data:
-  preprocessing:
-    noise: False
-    augment: False
+  augmentation:
+    time_masking: True
+    time_mask_param: 50
+    freq_masking: True
+    freq_mask_param: 50
 
 model:
   backbone: efficientnet
