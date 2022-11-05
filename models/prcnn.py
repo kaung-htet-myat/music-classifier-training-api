@@ -30,7 +30,7 @@ class PRCNN(nn.Module):
   def forward(self, x):
     input = x
     feature = self.feature_extractor(input)["fe_output"]
-    feature = self.bn_1(feature)
+    # feature = self.bn_1(feature)
     feature = self.dropout_1(feature)
     flattened = self.avg_pool_1(feature).squeeze(dim=-1).squeeze(dim=-1)
 

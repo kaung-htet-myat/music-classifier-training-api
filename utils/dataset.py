@@ -27,7 +27,12 @@ def get_transforms(data_cfg: DictConfig):
                                         sample_rate=data_cfg.preprocessing.sample_rate,
                                         n_fft=data_cfg.preprocessing.fft_size,
                                         hop_length=data_cfg.preprocessing.hop_length,
-                                        n_mels=data_cfg.preprocessing.n_mels
+                                        n_mels=data_cfg.preprocessing.n_mels,
+                                        center=True,
+                                        pad_mode='reflect',
+                                        norm="slaney",
+                                        onesided=True,
+                                        mel_scale="htk"
                                     )
             resampled = mel_spectrogram(resampled)
             resampled = resampled.unsqueeze(axis=0)
@@ -36,7 +41,8 @@ def get_transforms(data_cfg: DictConfig):
                                 n_fft=data_cfg.preprocessing.fft_size,
                                 win_length=None,
                                 hop_length=data_cfg.preprocessing.hop_length,
-                                center=False,
+                                center=True,
+                                pad_mode='reflect',
                                 power=2.0,
                             )
             resampled = spectrogram(resampled)
@@ -49,6 +55,7 @@ def get_transforms(data_cfg: DictConfig):
                             "n_fft": data_cfg.preprocessing.fft_size,
                             "n_mels": data_cfg.preprocessing.n_mels,
                             "hop_length": data_cfg.preprocessing.hop_length,
+                            "mel_scale": "htk",
                         },
                     )
             resampled = mfcc(resampled)
@@ -83,7 +90,12 @@ def get_transforms(data_cfg: DictConfig):
                                         sample_rate=data_cfg.preprocessing.sample_rate,
                                         n_fft=data_cfg.preprocessing.fft_size,
                                         hop_length=data_cfg.preprocessing.hop_length,
-                                        n_mels=data_cfg.preprocessing.n_mels
+                                        n_mels=data_cfg.preprocessing.n_mels,
+                                        center=True,
+                                        pad_mode='reflect',
+                                        norm="slaney",
+                                        onesided=True,
+                                        mel_scale="htk"
                                     )
             resampled = mel_spectrogram(resampled)
             resampled = resampled.unsqueeze(axis=0)
@@ -93,7 +105,8 @@ def get_transforms(data_cfg: DictConfig):
                                 n_fft=data_cfg.preprocessing.fft_size,
                                 win_length=None,
                                 hop_length=data_cfg.preprocessing.hop_length,
-                                center=False,
+                                center=True,
+                                pad_mode='reflect',
                                 power=2.0,
                             )
             resampled = spectrogram(resampled)
@@ -107,6 +120,7 @@ def get_transforms(data_cfg: DictConfig):
                             "n_fft": data_cfg.preprocessing.fft_size,
                             "n_mels": data_cfg.preprocessing.n_mels,
                             "hop_length": data_cfg.preprocessing.hop_length,
+                            "mel_scale": "htk",
                         },
                     )
             resampled = mfcc(resampled)
