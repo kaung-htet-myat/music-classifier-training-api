@@ -1,10 +1,16 @@
 version: 1
 train_records: [
-  "genres_dataset_0-of-8"
+  "genres_dataset_0-of-8",
+  "genres_dataset_1-of-8",
+  "genres_dataset_2-of-8",
+  "genres_dataset_3-of-8",
+  "genres_dataset_4-of-8",
+  "genres_dataset_5-of-8",
+  "genres_dataset_6-of-8"
 ]
 dev_records: [
-  "genres_dataset_1-of-8"
+  "genres_dataset_7-of-8"
 ]
 test_records: [
-  "genres_dataset_5-of-8"
+  "genres_dataset_8-of-8"
 ]
