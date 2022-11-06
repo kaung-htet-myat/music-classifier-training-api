@@ -4,5 +4,6 @@ train.log
 config.log
 show_sample.log
 show_config.log
+show_lrfn.log
 __pycache__/
 .DS_Store
