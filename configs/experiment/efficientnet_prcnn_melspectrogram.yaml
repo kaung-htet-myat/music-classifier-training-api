@@ -15,7 +15,7 @@ model:
   backbone: efficientnet
   backbone_out_channel: 160
   backbone_out_height: 8
-  backbone_out_width: 14
+  backbone_out_width: 27
   hidden_dims_1: 128
   hidden_dims_2: 128
 
