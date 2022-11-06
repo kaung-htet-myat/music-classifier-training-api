@@ -25,7 +25,6 @@ class PRCNN(nn.Module):
     self.linear_1 = nn.Linear(int(hidden_dims_1+backbone_out_dims[0]), hidden_dims_2)
     self.relu_1 = nn.ReLU()
     self.linear_2 = nn.Linear(hidden_dims_2, 10)
-    self.softmax = nn.Softmax(dim=1)
 
   def forward(self, x):
     input = x
@@ -47,6 +46,5 @@ class PRCNN(nn.Module):
     output = self.linear_1(concat_feat)
     output = self.relu_1(output)
     output = self.linear_2(output)
-    output = self.softmax(output)
 
     return output

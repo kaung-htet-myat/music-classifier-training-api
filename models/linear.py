@@ -21,7 +21,6 @@ class Linear(nn.Module):
     self.linear_1 = nn.Linear(backbone_out_dims[0], hidden_dims)
     self.relu_1 = nn.ReLU()
     self.linear_2 = nn.Linear(hidden_dims, 10)
-    self.softmax = nn.Softmax(dim=1)
 
   def forward(self, x):
     input = x
@@ -33,6 +32,5 @@ class Linear(nn.Module):
     output = self.linear_1(flattened)
     output = self.relu_1(output)
     output = self.linear_2(output)
-    output = self.softmax(output)
 
     return output

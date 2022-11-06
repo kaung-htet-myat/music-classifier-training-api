@@ -77,7 +77,6 @@ class Vit(nn.Module):
     ]*num_layers)
     self.layernorm = nn.LayerNorm(proj_dim)
     self.linear = nn.Linear(proj_dim, 10)
-    self.softmax = nn.Softmax(dim=1)
 
   def forward(self, x):
     feature = self.feature_extractor(x)["fe_output"]
@@ -95,7 +94,6 @@ class Vit(nn.Module):
     x = x.mean(dim=1)
     
     x = self.linear(x)
-    x = self.softmax(x)
 
     return x
 
