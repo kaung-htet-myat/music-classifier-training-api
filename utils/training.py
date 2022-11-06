@@ -17,6 +17,41 @@ def get_optimizer(model, optimizer_cfg):
     return optimizer
 
 
+def lrfn(epoch):
+    if epoch < 5:
+        lr = 1
+    elif epoch < 15:
+        lr = 0.5
+    elif epoch < 25:
+        lr = 0.1
+    elif epoch < 35:
+        lr = 0.05
+    elif epoch < 40:
+        lr = 0.01
+    
+    elif epoch < 45:
+        lr = 1
+    elif epoch < 55:
+        lr = 0.5
+    elif epoch < 65:
+        lr = 0.1
+    elif epoch < 75:
+        lr = 0.05
+    elif epoch < 80:
+        lr = 0.01
+
+    elif epoch < 85:
+        lr = 0.5
+    elif epoch < 95:
+        lr = 0.1
+    elif epoch < 100:
+        lr = 0.05
+
+    else:
+        lr = 0.01
+    return lr
+
+
 def get_scheduler(optimizer, scheduler_cfg):
 
     if scheduler_cfg.method == "step":
@@ -31,11 +66,16 @@ def get_scheduler(optimizer, scheduler_cfg):
                             T_mult=scheduler_cfg.t_mult,
                             eta_min=scheduler_cfg.eta_min,
                             last_epoch=scheduler_cfg.last_epoch)
-    else:
-        lr_scheduler = torch.optim.lr_scheduler.StepLR(
+    elif scheduler_cfg.method == "lambda":
+        lr_scheduler = torch.optim.lr_scheduler.LambdaLR(
                             optimizer,
-                            step_size=scheduler_cfg.step_size,
-                            gamma=scheduler_cfg.gamma)
+                            lr_lambda=lrfn,
+                        )
+    else:
+        lr_scheduler = torch.optim.lr_scheduler.LambdaLR(
+                            optimizer,
+                            lr_lambda=lrfn,
+                        )
 
     return lr_scheduler
 
