@@ -22,7 +22,7 @@ model:
   num_heads: 4
 
 training:
-  buffer_size: 512
+  buffer_size: 128
   seed: 1234
   batch_size: 64
   epochs: 140
