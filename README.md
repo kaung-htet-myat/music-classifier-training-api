@@ -21,6 +21,7 @@
         - melspectrogram
         - mfcc
       - data augmentation exps
+      - with distillation
   - Implement model training library (config structure)
       - data
         - data path
