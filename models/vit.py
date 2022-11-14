@@ -22,13 +22,11 @@ class Attention(nn.Module):
   def __init__(self, proj_dim, num_heads):
     super(Attention, self).__init__()
     self.layernorm = nn.LayerNorm(proj_dim)
-    self.multihead = nn.MultiheadAttention(proj_dim, num_heads)
-    self.dropout = nn.Dropout(0.1)
+    self.multihead = nn.MultiheadAttention(proj_dim, num_heads, dropout=0.1)
   
   def forward(self, x):
     x = self.layernorm(x)
     x, _ = self.multihead(x, x, x)
-    x = self.dropout(x)
     return x
 
 
