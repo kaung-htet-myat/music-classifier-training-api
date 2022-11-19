@@ -1,5 +1,5 @@
 defaults:
-  - experiment: efficientnet_prcnn_mfcc
+  - experiment: efficientnet_prcnn_melspectrogram
 
 hydra:
   output_subdir: null
@@ -13,9 +13,11 @@ experiment:
     dataset_path: ./data
     label_path: ./data/genre_labels.json
   training:
-    checkpoint_path: ./checkpoint
+    checkpoint_path: ./checkpoints
     load: True
     initial_epoch: 1
+    export_epoch: 77
+    export_dir: ./exported_models
   wandb:
     log: True
     project_name: music-genre-classification

@@ -30,6 +30,10 @@ def main(cfg: DictConfig):
     data_cfg = cfg.experiment.data
     model_cfg = cfg.experiment.model
     training_cfg = cfg.experiment.training
+    export_path = os.path.join(training_cfg.export_dir, f'{exp_name}_epoch_{training_cfg.export_epoch}_model.pth')
+
+    if not os.path.exists(training_cfg.export_dir):
+        os.makedirs(training_cfg.export_dir)
 
     if not training_cfg.checkpoint_path:
         raise ParameterNotProvidedError("checkpoint_path not provided")
@@ -59,9 +63,9 @@ def main(cfg: DictConfig):
     model.load_state_dict(checkpoint['model_state_dict'])
 
     scripted_model = torch.jit.script(model)
-    scripted_model.save(f'./exported_models/{exp_name}_epoch_{training_cfg.export_epoch}_model.pth')
+    scripted_model.save(export_path)
 
-    info_logger.info(f"model exported to './exported_models/{exp_name}_epoch_{training_cfg.export_epoch}_model.pth'")
+    info_logger.info(f"model exported to {export_path}")
 
 
 if __name__ == '__main__':
