@@ -126,7 +126,7 @@ def train_epoch(device, epoch, model, dataloader, loss_func, optimizer, schedule
         }, os.path.join(checkpoint_path, f'{exp_name}_epoch_{epoch}.pth'))
 
 
-def test_epoch(device, epoch, model, dataloader, loss_func, wandb, logger):
+def test_epoch(device, epoch, model, dataloader, loss_func, logger, wandb=None):
     size = 0
     batches = 0
     model.eval().to(device)
@@ -147,10 +147,10 @@ def test_epoch(device, epoch, model, dataloader, loss_func, wandb, logger):
     acc = acc / size
 
     logger.info(f"\tval loss: {loss:>8f}\tval acc: {(100*acc):>0.1f}%")
-    logger.info("="*20)
 
-    wandb.log({
-        "epoch": epoch,
-        "val_loss": loss,
-        "val_acc": acc,
-    })
+    if wandb:
+        wandb.log({
+            "epoch": epoch,
+            "val_loss": loss,
+            "val_acc": acc,
+        })

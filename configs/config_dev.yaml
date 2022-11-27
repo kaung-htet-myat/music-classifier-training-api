@@ -16,6 +16,7 @@ experiment:
     checkpoint_path: ./checkpoints
     load: True
     initial_epoch: 1
+    test_epoch: 77
     export_epoch: 77
     export_dir: ./exported_models
   wandb:

@@ -88,7 +88,7 @@ def main(cfg: DictConfig):
         load_path = os.path.join(training_cfg.checkpoint_path, f'{exp_name}_epoch_{training_cfg.initial_epoch-1}.pth')
 
         if not os.path.exists(load_path):
-            raise UnsupportedParameterError("model checkpoint path to load is not a directory")
+            raise UnsupportedParameterError("model checkpoint path to load does not exist")
 
         map_location = device
         if device == 'cuda':
@@ -108,7 +108,8 @@ def main(cfg: DictConfig):
         start_time = time.time()
         train_epoch(device, epoch, model, train_loader, loss_func, optimizer, scheduler, training_cfg.checkpoint_path, exp_name, wandb, train_logger)
         train_logger.info(f"time taken(training): {int(time.time() - start_time)}s")
-        test_epoch(device, epoch, model, dev_loader, loss_func, wandb, train_logger)
+        test_epoch(device, epoch, model, dev_loader, loss_func, train_logger, wandb)
+        train_logger.info("="*20)
 
 
 if __name__ == '__main__':
