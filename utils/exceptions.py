@@ -1,4 +1,3 @@
-
 class ParameterNotProvidedError(Exception):
     """ParameterNotProvidedError"""
 

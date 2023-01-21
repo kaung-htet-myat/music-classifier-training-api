@@ -1,5 +1,5 @@
 import hydra
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 
 import torch
 
@@ -10,9 +10,14 @@ def get_model_param_count(model):
     return
 
 
-@hydra.main(version_base=None, config_path="./configs", config_name="config_dev")
+@hydra.main(version_base=None, config_path="./configs", config_name="config")
 def main(cfg: DictConfig):
-    
+    """
+    Print model summary.
+    Args:
+        cfg (DictConfig): Hydra config object
+    """
+
     data_cfg = cfg.experiment.data
     model_cfg = cfg.experiment.model
 
@@ -24,5 +29,5 @@ def main(cfg: DictConfig):
     del model
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -1,11 +1,12 @@
 import wandb
 
+
 def wandb_init(wandb_cfg, data_cfg, model_cfg, training_cfg, exp_name):
 
     configs = {
         "data": dict(data_cfg),
         "model": dict(model_cfg),
-        "training": dict(training_cfg)
+        "training": dict(training_cfg),
     }
 
     wandb.init(

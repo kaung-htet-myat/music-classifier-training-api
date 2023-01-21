@@ -3,8 +3,8 @@ import torch
 
 
 def get_lr(optimizer):
-  for param_group in optimizer.param_groups:
-    return param_group['lr']
+    for param_group in optimizer.param_groups:
+        return param_group["lr"]
 
 
 def get_optimizer(model, optimizer_cfg):
@@ -28,7 +28,7 @@ def lrfn(epoch):
         lr = 0.05
     elif epoch < 40:
         lr = 0.01
-    
+
     elif epoch < 45:
         lr = 1
     elif epoch < 55:
@@ -56,31 +56,43 @@ def get_scheduler(optimizer, scheduler_cfg):
 
     if scheduler_cfg.method == "step":
         lr_scheduler = torch.optim.lr_scheduler.StepLR(
-                            optimizer,
-                            step_size=scheduler_cfg.step_size,
-                            gamma=scheduler_cfg.gamma)
+            optimizer, step_size=scheduler_cfg.step_size, gamma=scheduler_cfg.gamma
+        )
     elif scheduler_cfg.method == "cosine":
         lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-                            optimizer,
-                            T_0=scheduler_cfg.t_0,
-                            T_mult=scheduler_cfg.t_mult,
-                            eta_min=scheduler_cfg.eta_min,
-                            last_epoch=scheduler_cfg.last_epoch)
+            optimizer,
+            T_0=scheduler_cfg.t_0,
+            T_mult=scheduler_cfg.t_mult,
+            eta_min=scheduler_cfg.eta_min,
+            last_epoch=scheduler_cfg.last_epoch,
+        )
     elif scheduler_cfg.method == "lambda":
         lr_scheduler = torch.optim.lr_scheduler.LambdaLR(
-                            optimizer,
-                            lr_lambda=lrfn,
-                        )
+            optimizer,
+            lr_lambda=lrfn,
+        )
     else:
         lr_scheduler = torch.optim.lr_scheduler.LambdaLR(
-                            optimizer,
-                            lr_lambda=lrfn,
-                        )
+            optimizer,
+            lr_lambda=lrfn,
+        )
 
     return lr_scheduler
 
 
-def train_epoch(device, epoch, model, dataloader, loss_func, optimizer, scheduler, checkpoint_path, exp_name, wandb, logger):
+def train_epoch(
+    device,
+    epoch,
+    model,
+    dataloader,
+    loss_func,
+    optimizer,
+    scheduler,
+    checkpoint_path,
+    exp_name,
+    wandb,
+    logger,
+):
     logger.info(f"epoch {epoch}:")
     batches = 0
     model.train().to(device)
@@ -108,22 +120,26 @@ def train_epoch(device, epoch, model, dataloader, loss_func, optimizer, schedule
     train_loss = train_loss / batches
     lr = get_lr(optimizer)
     logger.info(f"\ttrain loss: {train_loss}\tlr: {lr}")
-    wandb.log({
-        "epoch": epoch,
-        "loss": train_loss,
-        "lr": lr,
-    })
+    wandb.log(
+        {
+            "epoch": epoch,
+            "loss": train_loss,
+            "lr": lr,
+        }
+    )
 
     scheduler.step()
 
     torch.save(
         {
-            'epoch': epoch,
-            'model_state_dict': model.state_dict(),
-            'optimizer_state_dict': optimizer.state_dict(),
-            'scheduler_state_dict': scheduler.state_dict(),
-            'loss': train_loss,
-        }, os.path.join(checkpoint_path, f'{exp_name}_epoch_{epoch}.pth'))
+            "epoch": epoch,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "scheduler_state_dict": scheduler.state_dict(),
+            "loss": train_loss,
+        },
+        os.path.join(checkpoint_path, f"{exp_name}_epoch_{epoch}.pth"),
+    )
 
 
 def test_epoch(device, epoch, model, dataloader, loss_func, logger, wandb=None):
@@ -149,8 +165,10 @@ def test_epoch(device, epoch, model, dataloader, loss_func, logger, wandb=None):
     logger.info(f"\tval loss: {loss:>8f}\tval acc: {(100*acc):>0.1f}%")
 
     if wandb:
-        wandb.log({
-            "epoch": epoch,
-            "val_loss": loss,
-            "val_acc": acc,
-        })
+        wandb.log(
+            {
+                "epoch": epoch,
+                "val_loss": loss,
+                "val_acc": acc,
+            }
+        )
