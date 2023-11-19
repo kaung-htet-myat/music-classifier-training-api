@@ -1,6 +1,7 @@
-name: melspectrogram
+name: mfcc
 sample_rate: 22050
 sample_length: 5
 fft_size: 1024
 hop_length: 256
 n_mels: 128
+n_mfcc: 128

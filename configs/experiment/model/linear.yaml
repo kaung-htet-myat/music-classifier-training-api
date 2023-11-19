@@ -1,0 +1,6 @@
+name: linear
+backbone: null
+backbone_out_channel: null
+backbone_out_height: null
+backbone_out_width: null
+hidden_dims: null

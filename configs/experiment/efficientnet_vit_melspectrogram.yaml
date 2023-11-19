@@ -1,0 +1,42 @@
+name: efficientnet_vit_melspectrogram
+defaults:
+  - data: v1
+  - data/preprocessing: melspectrogram
+  - model: vit
+
+data:
+  augmentation:
+    time_masking: True
+    time_mask_param: 50
+    freq_masking: True
+    freq_mask_param: 50
+
+model:
+  backbone: efficientnet
+  backbone_out_channel: 160
+  backbone_out_height: 8
+  backbone_out_width: 27
+  num_layers: 3
+  proj_dim: 128
+  hidden_dim: 128
+  num_heads: 4
+
+training:
+  buffer_size: 128
+  seed: 1234
+  batch_size: 64
+  epochs: 140
+  optimizer: 
+    method: adam
+    lr: 0.001
+  scheduler:
+    # method: step
+    # step_size: 15
+    # gamma: 0.1
+    # method: cosine
+    # t_0: 10
+    # t_mult: 1
+    # eta_min: 0
+    # last_epoch: -1
+    method: lambda
+

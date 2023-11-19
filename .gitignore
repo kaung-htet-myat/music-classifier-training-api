@@ -1,8 +1,8 @@
 /outputs
 /data
-train.log
-config.log
-show_sample.log
-show_config.log
+/checkpoints
+/exported_models
+/test_tracks
+*.log
 __pycache__/
 .DS_Store

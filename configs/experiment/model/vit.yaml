@@ -1,0 +1,9 @@
+name: vit
+backbone: null
+backbone_out_channel: null
+backbone_out_height: null
+backbone_out_width: null
+num_layers: null
+proj_dim: null
+hidden_dim: null
+num_heads: null
